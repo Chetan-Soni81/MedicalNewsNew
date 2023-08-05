@@ -6,7 +6,7 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 @model ArticleCategoryModel
-
+@*Modal for Update*@
 <div id="myModal" class="modalc rounded-3">
 
     <!-- Modal content -->
@@ -51,6 +51,50 @@
         </div>
     </div>
 </div>
+@*Modal for Insert*@
+<div id="addModal" class="modalc rounded-3">
+
+    <!-- Modal content -->
+    <div class="modalc-content rounded-3 w-50">
+        <div class="row justify-content-end">
+            <div class="d-flex justify-content-end">
+                <span class="modalc-close modalc-close-icon">&times;</span>
+            </div>
+        </div>
+        <h3 class="text-center mb-3">Insert Event Category</h3>
+        <div class="p-3">
+            <form id="addForm">
+                <div class="row">
+                    <div class="mb-3 col-12 col-lg-4">
+                        <label for="Category" class="form-label text-center">Event Category</label>
+                        <input id="addCategory" class="form-control" name="Category" placeholder="Please Enter the Article Category" required />
+                    </div>
+
+                    <div class="mb-3 col-12 col-lg">
+                        <label for="ShowOnHomePage" class="form-label text-center">Show On Home Page</label>
+                        <select id="ddlAddSOHP" class="form-select" required>
+                            @*<option value="">--Please Select--</option>*@
+                            <option value=1>Yes</option>
+                            <option value=>No</option>
+                        </select>
+                    </div>
+                    <div class="mb-3 col-12 col-lg">
+                        <label for="ShowOnMainMenu" class="form-label text-center">Show On Main Menu</label>
+                        <select id="ddlAddSOMM" class="form-select" required>
+                            @*<option value="">--Please Select--</option>*@
+                            <option value=1>Yes</option>
+                            <option value=>No</option>
+                        </select>
+                    </div>
+
+                    <div class=" col-12 col-lg-auto py-lg-4">
+                        <button type="submit" class="btn btn-block btn-success mt-lg-1">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <div class="container-fluid p-0">
     <div class="notice-wrap">
@@ -59,7 +103,7 @@
     <div class="mb-3">
         <h1 class="h3 d-inline align-middle">Manage Event Category</h1>
     </div>
-    <div class="row">
+    @*<div class="row">
         <div class="col-12 ">
             <div class="card">
                 <div class="card-body">
@@ -99,7 +143,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>*@
     <div class="col-12 ">
         <div class="card">
             <div class="card-header">
@@ -108,6 +152,9 @@
             <div class="card-body">
                 <div class="col-12">
                     <div class="row">
+                        <div class="d-flex justify-content-end mb-3">
+                            <a class="text-primary modelc-toggler" model-target="#addModal"><i class="fa-regular fa-square-plus"></i> Add Category</a>
+                        </div>
                         <table id="dataTableData" class="table table-striped">
                             <thead>
                                 <tr>
@@ -269,9 +316,39 @@
                     }
                 }
             });
-
+            $('#editForm')[0].reset();
             $('#myModal').css('display', 'none');
 
-        })
+        });
+
+        $('#addForm').on('submit', function (e) {
+            e.preventDefault();
+
+            var data = {
+                category: $('#addCategory').val(),
+                showOnHomePage: Boolean($('#ddlAddSOHP').val()),
+                showOnMainMenu: Boolean($('#ddlAddSOMM').val())
+            };
+
+            console.log(data);
+
+            $.ajax({
+                url: '/Admin/Category/CreateEvent',
+                type: 'POST',
+                data: data,
+                dataType: 'json',
+                success: (res) => {
+                    if (res) {
+                        GetCategory(() => {
+                            table.clear();
+                            table.rows.add(category).draw();
+                        })
+                    }
+                }
+            });
+            $('#addForm')[0].reset();
+            $('#addModal').css('display', 'none');
+
+        });
     </script>
 }

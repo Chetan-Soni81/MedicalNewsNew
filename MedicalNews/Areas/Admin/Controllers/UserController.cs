@@ -17,23 +17,19 @@ namespace MedicalNews.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(UserModel model)
+        public IActionResult CreateUser(UserModel model)
         {
-            int i = 0;
+            if (!ModelState.IsValid)
+            {
+                return Json(false);
+            }
             using (var repo = new UserRepository())
             {
-                if (!ModelState.IsValid)
-                {
-                    return View(model);
-                }
+                
                 model.Password = Stringcl.Encrypt(model.Password);
-                i = repo.CreateUser(model);
+                var data = repo.CreateUser(model);
+                return Json(data);
             }
-
-            ViewData["Message"] = i != 0 ? "User created successfully." : "User not created.";
-
-            ModelState.Clear();
-            return View();
         }
 
         [HttpDelete]

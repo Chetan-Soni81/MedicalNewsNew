@@ -7,6 +7,7 @@
 }
 @model AdsModel
 
+@*Model for Update*@
 <div id="myModal" class="modalc p-sm-3 rounded-3">
 
     <!-- Modal content -->
@@ -66,6 +67,64 @@
         </div>
     </div>
 </div>
+@*Model for Insert*@
+<div id="addModal" class="modalc p-sm-3 rounded-3">
+
+    <!-- Modal content -->
+    <div class="modalc-content rounded-3 w-50">
+        <div class="row justify-content-end">
+            <div class="d-flex justify-content-end">
+                <span class="modalc-close modalc-close-icon">&times;</span>
+            </div>
+        </div>
+        <h3 class="text-center mb-3">Insert Advertisement Data</h3>
+        <div class="p-3">
+            <form id="addForm">
+                <div class="row">
+                    <div class="col-md-8 col-sm-12 mb-3">
+                        <label for="Title" class="form-label text-center">Title</label>
+                        <input id="addTitle" name="Title" class="form-control" placeholder="Link Title." required>
+                    </div>
+
+                    <div class="col-md-4 col-sm-12 mb-3">
+                        <label for="Position" class="form-label text-center">Show On</label>
+                        <select id="ddlAddPosition" class="form-control" required>
+                            <option Value="1">Position 1</option>
+                            <option Value="2">Position 2</option>
+                            <option Value="3">Position 3</option>
+                            <option Value="2">Position 4</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-7 col-sm-12 mb-3">
+                        <label for="WebUrl" class="form-label text-center">Web Url</label>
+                        <input id="addWebUrl" name="WebUrl" class="form-control" placeholder="Please Enter the Web Url">
+                    </div>
+
+                    <div class="col-md-5 col-sm-12 mb-3">
+                        <label for="AdsImage" class="form-label text-center">Ads Image</label>
+                        <input id="imgAddAdsImage" type="file" name="AdsImage" accept="image/*" class="form-control" />
+                    </div>
+
+                    <div class="col-md-5 col-sm-12 mb-3">
+                        <label for="ShowFrom" class="form-label text-center">Show From</label>
+                        <input id="addShowFrom" type="date" name="ShowFrom" class="form-control" placeholder="Show From" required>
+
+                    </div>
+                    <div class="col-md-5 col-sm-12 mb-3">
+                        <label for="ShowTo" class="form-label text-center">Show To</label>
+                        <input id="addShowTo" type="date" name="ShowTo" class="form-control" placeholder="Show To" required>
+
+                    </div>
+
+                    <div class="col-2 pt-4 mb-3">
+                        <button type="submit" class="mt-1 btn btn-block btn-success">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <div class="container-fluid p-0">
     <div class="notice-wrap">
@@ -74,7 +133,7 @@
     <div class="mb-3">
         <h1 class="h3 d-inline align-middle">Manage Ads</h1>
     </div>
-    <div class="row">
+    @*<div class="row d-none">
         <div class="col-12 ">
             <div class="card">
                 <div class="card-body">
@@ -139,7 +198,7 @@
 
             </div>
         </div>
-    </div>
+    </div>*@
     <div class="col-12 ">
         <div class="card">
             <div class="card-header">
@@ -148,6 +207,9 @@
             <div class="card-body">
                 <div class="col-12">
                     <div class="row">
+                        <div class="d-flex justify-content-end mb-3">
+                            <a class="text-primary modelc-toggler" model-target="#addModal"><i class="fa-regular fa-square-plus"></i> Add Advertisement</a>
+                        </div>
                         <table id="dataTableData" class="table table-bordered table-striped table-hover">
                             <thead>
 
@@ -337,6 +399,41 @@
             });
 
             $('#myModal').css('display', 'none');
+
+        });
+
+        $('#addForm').on('submit', function (e) {
+            e.preventDefault();
+
+            var data = new FormData();
+            data.append('title', $('#addTitle').val());
+            data.append('webUrl', $('#addWebUrl').val());
+            data.append('position', $('#ddlAddPosition').val());
+            data.append('showFrom', $('#addShowFrom').val());
+            data.append('showTo', $('#addShowTo').val());
+            data.append('adsImage', $('#imgAddAdsImage')[0].files[0]);
+            console.log(data);
+
+            $.ajax({
+                url: '/Admin/Ads/CreateAds',
+                type: 'POST',
+                data: data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType: 'json',
+                success: (res) => {
+                    debugger;
+                    if (res) {
+                        GetAds(() => {
+                            table.clear();
+                            table.rows.add(ads).draw();
+                        })
+                    }
+                }
+            });
+            $('#addForm')[0].reset();
+            $('#addModal').css('display', 'none');
 
         });
     </script>

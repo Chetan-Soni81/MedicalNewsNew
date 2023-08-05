@@ -11,34 +11,24 @@ namespace MedicalNews.Areas.Admin.Controllers
     {
         public IActionResult Index()
         {
-            using (var repo = new AdsRespository())
-            {
-                ViewBag.Ads = repo.GetAllAds();
-            }
+            
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index([FromForm] AdsModel model)
+        public async Task<IActionResult> CreateAds(AdsModel model)
         {
-            int i = 0;
-            using (var repo = new AdsRespository())
+            if (!ModelState.IsValid)
             {
-                if (!ModelState.IsValid)
-                {
-                    ViewBag.Ads = repo.GetAllAds();
-                    return View(model);
-                }
-                model.ImageUrl = await UploadImage(model.AdsImage);
-                i = repo.CreateAds(model);
-                ViewBag.Ads = repo.GetAllAds();
+                return Json(false);
             }
 
-            ViewData["Message"] = i == 0 ? "Ads Creation failed" : "Ads Created Successfully";
-
-            ModelState.Clear();
-
-            return View();
+            using (var repo = new AdsRespository())
+            {
+                model.ImageUrl = await UploadImage(model.AdsImage);
+                var data = repo.CreateAds(model);
+                return Json(data);
+            }
         }
 
         [HttpDelete]

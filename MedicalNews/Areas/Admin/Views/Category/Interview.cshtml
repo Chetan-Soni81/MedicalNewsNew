@@ -6,7 +6,7 @@
     ViewData["Title"] = "Manage Interview Category";
 }
 @model InterviewCategoryModel
-
+@*Modal for Update*@
 <div id="myModal" class="modalc rounded-3">
 
     <!-- Modal content -->
@@ -38,7 +38,37 @@
         </div>
     </div>
 </div>
+@*Modal for Insert*@
+<div id="addModal" class="modalc rounded-3">
 
+    <!-- Modal content -->
+    <div class="modalc-content rounded-3 w-50">
+        <div class="row justify-content-end">
+            <div class="d-flex justify-content-end">
+                <span class="modalc-close modalc-close-icon">&times;</span>
+            </div>
+        </div>
+        <h3 class="text-center mb-3">Insert Interview Category</h3>
+        <div class="p-3">
+            <form id="addForm">
+                <div class="row">
+                    <div class="mb-3 col-4 col-lg-3">
+                        <label for="sno" class="form-label text-center">Serial Number</label>
+                        <input id="addSno" class="form-control" name="sno" placeholder="Serial Number" />
+                    </div>
+                    <div class="mb-3 col-8 col-lg">
+                        <label for="Category" class="form-label text-center">Interview Category</label>
+                        <input id="addCategory" class="form-control" name="Category" placeholder="Enter the Interview Category" required />
+                    </div>
+
+                    <div class=" col-12 col-lg-auto py-lg-4">
+                        <button type="submit" class="btn btn-block btn-success mt-lg-1">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <div class="container-fluid p-0">
     <div class="notice-wrap">
         <asp:Label ID="lblMessage" runat="server" CssClass="notice-wrap"></asp:Label>
@@ -46,7 +76,7 @@
     <div class="mb-3">
         <h1 class="h3 d-inline align-middle">Manage Interview Category</h1>
     </div>
-    <div class="row">
+    @*<div class="row">
         <div class="col-12 ">
             <div class="card">
                 <div class="card-body">
@@ -72,7 +102,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>*@
     <div class="col-12 ">
         <div class="card">
             <div class="card-header">
@@ -81,6 +111,9 @@
             <div class="card-body">
                 <div class="col-12">
                     <div class="row">
+                        <div class="d-flex justify-content-end mb-3">
+                            <a class="text-primary modelc-toggler" model-target="#addModal"><i class="fa-regular fa-square-plus"></i> Add Category</a>
+                        </div>
                         <table id="dataTableData" class="table table-striped">
                             <thead>
                                 <tr>
@@ -202,7 +235,7 @@
                 interviewCategory: $('#txtCategory').val(),
             };
 
-            console.log(data);
+            //console.log(data);
 
             $.ajax({
                 url: '/Admin/Category/UpdateInterview',
@@ -221,6 +254,36 @@
 
             $('#myModal').css('display', 'none');
 
-        })
+        });
+
+        $('#addForm').on('submit', function (e) {
+            e.preventDefault();
+
+            var data = {
+                sno: $('#addSno').val(),
+                interviewCategory: $('#addCategory').val(),
+            };
+
+            //console.log(data);
+
+            $.ajax({
+                url: '/Admin/Category/CreateInterview',
+                type: 'POST',
+                data: data,
+                dataType: 'json',
+                success: (res) => {
+                    if (res) {
+                        GetCategory(() => {
+                            table.clear();
+                            table.rows.add(category).draw();
+                        })
+                    }
+                }
+            });
+
+            $('addForm')[0].reset();
+            $('#addModal').css('display', 'none');
+
+        });
     </script>
 }

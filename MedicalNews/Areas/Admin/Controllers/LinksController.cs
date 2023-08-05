@@ -16,23 +16,17 @@ namespace MedicalNews.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(LinksModel model)
+        public IActionResult CreateIndex(LinksModel model)
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return Json(false);
             }
             using (var repo = new LinksRepository())
             {
-
-                int i = repo.CreateLink(model);
-
-                ViewData["Message"] = i == 0 ? "Link cannot be created" : "Link created successfull";
-
-                ModelState.Clear();
+                var data = repo.CreateLink(model);
+                return Json(data);
             }
-
-            return View();
         }
 
         [HttpGet]

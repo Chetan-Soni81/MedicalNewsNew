@@ -25,29 +25,18 @@ namespace MedicalNews.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(InterviewModel model)
+        public IActionResult CreateInterview(InterviewModel model)
         {
-            using (var repo = new CategoryRepository())
+            if(!ModelState.IsValid)
             {
-                ViewBag.InterviewCategories = repo.GetAllInterviewCategories();
-            }
-            int i = 0;
-            using (var repo = new InterviewRepository())
-            {
-                if (!ModelState.IsValid)
-                {
-                    ViewBag.Interviews = repo.GetAllInterviews();
-                    return View(model);
-                }
-
-                i = repo.CreateInterview(model);
-                ViewBag.Interviews = repo.GetAllInterviews();
+                return Json(false);
             }
 
-            ViewData["Message"] = i == 0 ? "Interview cannot be created" : " Interview created successful";
-
-            ModelState.Clear();
-            return View();
+            using(var repo = new InterviewRepository())
+            {
+                var data = repo.CreateInterview(model);
+                return Json(data);
+            }
         }
 
         [HttpDelete]

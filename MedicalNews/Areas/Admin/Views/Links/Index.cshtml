@@ -7,6 +7,7 @@
 }
 @model LinksModel
 
+@*Modal for Update*@
 <div id="myModal" class="modalc rounded-3">
 
     <!-- Modal content -->
@@ -35,6 +36,34 @@
     </div>
 
 </div>
+@*Modal for Insert*@
+<div id="addModal" class="modalc rounded-3">
+
+    <!-- Modal content -->
+    <div class="modalc-content rounded-3 w-50">
+        <div class="row justify-content-end">
+            <div class="d-flex justify-content-end">
+                <span class="modalc-close modalc-close-icon">&times;</span>
+            </div>
+        </div>
+        <h3 class="text-center mb-3">Insert Important Link</h3>
+        <form id="addForm">
+            <div class="mb-3">
+                <label class="form-label">Title</label>
+                <input id="addTitle" class="form-control" placeholder="Title" required/>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Url</label>
+                <input id="addUrl" class="form-control" placeholder="https://www.example.com" required/>
+            </div>
+            <div>
+                <button class="btn btn-block btn-success">Save</button>
+                <button type="button" class="ms-2 btn btn-block btn-dark modalc-close">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+</div>
 
 <div class="container-fluid p-0">
     <div class="notice-wrap">
@@ -43,33 +72,6 @@
 
     <div class="mb-3">
         <h1 class="h3 d-inline align-middle">Manage Important Links</h1>
-    </div>
-    <div class="row">
-        <div class="col-12 ">
-            <div class="card">
-                <div class="card-body">
-                    <div class="col-12">
-                        <form mwthod="post" asp-action="Index" asp-controller="Links" asp-area="Admin">
-                            <div class="row">
-                                <div class="col-md-5 col-sm-12">
-                                    <label asp-for="WebTitle" class="form-label text-center">Title</label>
-                                    <input asp-for="WebTitle" class="form-control" placeholder="Link Title." required>
-                                    <span asp-validation-for="WebTitle" class="text-danger"></span>
-                                </div>
-                                <div class="col-md-5 col-sm-12">
-                                    <label asp-for="WebUrl" class="form-label text-center">Web Url</label>
-                                    <input asp-for="WebUrl" class="form-control" placeholder="Please Enter the Web Url" required>
-                                    <span asp-validation-for="WebUrl" class="text-danger"></span>
-                                </div>
-                                <div class="col-2 p-4 mt-1">
-                                    <button type="submit" class="btn btn-block btn-success">Save</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <div class="col-12 ">
@@ -81,6 +83,9 @@
                 <div class="col-12">
                     <div class="row">
                         <div class="table-responsive">
+                            <div class="d-flex justify-content-end mb-3">
+                                <a class="text-primary modelc-toggler" model-target="#addModal"><i class="fa-regular fa-square-plus"></i> Add Link</a>
+                            </div>
                             <table class="table table-bordered table-striped table-hover" id="dataTableData">
                                 <thead>
                                     <tr>
@@ -223,13 +228,36 @@
                         GetLinks(() => { table.clear(); table.rows.add(links).draw() });
                     }
 
-                    $('#myModal').css('display', 'none');
+                }
+            })
+            
+            $('#editform')[0].reset();
+            $('#myModal').css('display', 'none');
+        });
+
+        $('#addForm').on('submit', function (event) {
+            event.preventDefault();
+            var data = {
+                webTitle: $('#txtTitle').val(),
+                webUrl: $('#txtUrl').val()
+            }
+
+            console.log(data)
+
+            $.ajax({
+                url: '/Admin/Links/CreateLink',
+                type: "POST",
+                data: data,
+                success: (res) => {
+                    if (res.success) {
+                        GetLinks(() => { table.clear(); table.rows.add(links).draw() });
+                    }
+
                 }
             })
 
-            $('#txtTitle').val('')
-            $('#txtUrl').val('')
-            $('#lblId').val('')
+            $('#addForm')[0].reset();
+            $('#addModal').css('display', 'none');
         });
     </script>
 

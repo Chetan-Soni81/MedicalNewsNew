@@ -2,6 +2,7 @@
 using MedicalNews.Areas.Admin.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Razor.Language;
 
 namespace MedicalNews.Areas.Admin.Controllers
 {
@@ -13,6 +14,21 @@ namespace MedicalNews.Areas.Admin.Controllers
         public IActionResult Event()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult CreateEvent(EventCategoryModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(false);
+            }
+
+            using (var repo = new CategoryRepository())
+            {
+                var data = repo.CreateEventCategory(model);
+                return Json(data);
+            }
         }
 
         [HttpPost]
@@ -92,23 +108,18 @@ namespace MedicalNews.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Interview(InterviewCategoryModel model)
+        public IActionResult CreateInterview(InterviewCategoryModel model)
         {
-            if (!ModelState.IsValid)
+            if(!ModelState.IsValid)
             {
-                return View(model);
+                return Json(false);
             }
 
             using (var repo = new CategoryRepository())
             {
-
-                var i = repo.CreateInterviewCategory(model);
-
-                ViewData["Message"] = i == 0 ? "Cannot Create Interview Category" : "Interview Category Created Successful";
-
-                ModelState.Clear();
+                var data = repo.CreateInterviewCategory(model);
+                return Json(data);
             }
-            return View();
         }
 
         [HttpGet]
@@ -163,6 +174,21 @@ namespace MedicalNews.Areas.Admin.Controllers
         public IActionResult Article()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult CreateArticle(ArticleCategoryModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(false);
+            }
+
+            using (var repo = new CategoryRepository())
+            {
+                var data = repo.CreateArticleCategory(model);
+                return Json(data);
+            }
         }
 
         [HttpPost]
@@ -244,34 +270,6 @@ namespace MedicalNews.Areas.Admin.Controllers
         {
             ViewData["id"] = id;
             return View();
-        }
-
-        [HttpPost]
-        public IActionResult ArticleSub(ArticleSubCategoryModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            using (var repo = new CategoryRepository())
-            {
-                int i = repo.CreateArticleSubCategory(model);
-
-                ViewData["Message"] = "Article Category Not Created";
-
-                if (i != 0)
-                {
-                    ViewData["Message"] = "Article Category Created Successful";
-
-                }
-
-                int? id = model.ArticleCategoryID;
-
-                ModelState.Clear();
-
-                return RedirectToAction("ArticleSub", new { id = id}) ;
-            }
         }
 
         [HttpPost]

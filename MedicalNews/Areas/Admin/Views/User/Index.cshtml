@@ -7,6 +7,7 @@
 }
 @model UserModel
 
+@*Modal for Update*@
 <div id="myModal" class="modalc p-sm-3 rounded-3">
 
     <!-- Modal content -->
@@ -63,6 +64,64 @@
         </div>
     </div>
 </div>
+@*Modal for Insert*@
+<div id="addModal" class="modalc p-sm-3 rounded-3">
+
+    <!-- Modal content -->
+    <div class="modalc-content rounded-3 w-50">
+        <div class="row justify-content-end">
+            <div class="d-flex justify-content-end">
+                <span class="modalc-close modalc-close-icon">&times;</span>
+            </div>
+        </div>
+        <h3 class="text-center mb-3">Insert User Data</h3>
+        <div class="p-3">
+            <form id="addForm">
+                <div class="row">
+                    <label id="lblId" class="d-none"></label>
+                    <div class="mb-3 col-md-6 col-lg-4 col-sm-12">
+                        <label for="Name" class="form-label text-center">Name</label>
+                        <input id="addName" name="Name" class="form-control" Placeholder="Name" required />
+                    </div>
+                    <div class="mb-3 col-md-6 col-lg-4 col-sm-12">
+                        <label for="EmailId" class="form-label text-center">Email</label>
+                        <input id="addEmail" name="EmailId" class="form-control" Placeholder="Email" required>
+                    </div>
+                    <div class="mb-3 col-md-6 col-lg-4 col-sm-12">
+                        <label for="MobileNumber" class="form-label text-center">Mobile</label>
+                        <input id="addMobile" type="tel" name=MobileNumber class="form-control" Placeholder="Mobile" required>
+                    </div>
+
+                    <div class="mb-3 col-md-6 col-lg-4 col-sm-12">
+                        <label for="RoleId" class="form-label text-center">Role</label>
+                        <select id="ddlAddRole" class="form-control" required>
+                            <option value="">--Select an option--</option>
+                            <option value="1">Super Admin</option>
+                        </select>
+                    </div>
+                    <div class="mb-3 col-md-6 col-lg-4 col-sm-12">
+                        <label for="Username" class="form-label text-center">Username</label>
+                        <input id="addUsername" name="Username" class="form-control" Placeholder="User Id" required>
+                    </div>
+                    <div class="mb-3 col-md-6 col-lg-4 col-sm-12">
+                        <label for="Password" class="form-label text-center">Password</label>
+                        <input id="addPassword" name="Password" class="form-control" Placeholder="Password" required>
+                    </div>
+
+
+                    <div class="mb-3 col-md col-sm-12">
+                        <label for="Address" class="form-label text-center">Address</label>
+                        <input id="addAddress" name="Address" class="form-control" Placeholder="Address">
+                    </div>
+
+                    <div class="mb-3 col-12 col-md-auto py-4 mt-1">
+                        <button type="submit" class="btn btn-block btn-success">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <div class="container-fluid p-0">
     <div class="notice-wrap">
@@ -72,63 +131,7 @@
         <h1 class="h3 d-inline align-middle">Manage User</h1>
     </div>
     <div class="row">
-        <div class="col-12 ">
-            <div class="card">
-                <div class="card-body">
-                    <div class="col-12">
-                        <form method="post" asp-action="Index" asp-controller="User" asp-area="Admin">
-                            <div class="row mb-3">
-                                <div class="col-md-4 col-sm-12">
-                                    <label asp-for="Name" class="form-label text-center">Name</label>
-                                    <input asp-for="Name" class="form-control" Placeholder="Name" />
-                                    <span asp-validation-for="Name" class="text-danger"></span>
-                                </div>
-                                <div class="col-md-4 col-sm-12">
-                                    <label asp-for="EmailId" class="form-label text-center">Email</label>
-                                    <input asp-for="EmailId" class="form-control" Placeholder="Email">
-                                    <span asp-validation-for="EmailId" class="text-danger"></span>
-                                </div>
-                                <div class="col-md-4 col-sm-12">
-                                    <label asp-for="MobileNumber" class="form-label text-center">Mobile</label>
-                                    <input type="tel" asp-for=MobileNumber class="form-control" Placeholder="Mobile">
-                                    <span asp-validation-for="MobileNumber" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-md-4 col-sm-12">
-                                    <label asp-for="RoleId" class="form-label text-center">Role</label>
-                                    <select asp-for="RoleId" class="form-control">
-                                        <option value="">--Please Select--</option>
-                                        <option value="1">Super Admin</option>
-                                    </select>
-                                    <span asp-validation-for="RoleId" class="text-danger"></span>
-                                </div>
-                                <div class="col-md-4 col-sm-12">
-                                    <label asp-for="Username" class="form-label text-center">Username</label>
-                                    <input asp-for="Username" class="form-control" Placeholder="User Id">
-                                    <span asp-validation-for=Username class="text-danger"></span>
-                                </div>
-                                <div class="col-md-4 col-sm-12">
-                                    <label asp-for="Password" class="form-label text-center">Password</label>
-                                    <input asp-for="Password" class="form-control" Placeholder="Password">
-                                    <span asp-validation-for="Password" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-md col-sm-12">
-                                    <label asp-for="Address" class="form-label text-center">Address</label>
-                                    <input asp-for="Address" class="form-control" Placeholder="Address">
-                                    <span asp-validation-for="Address" class="text-danger" ControlToValidate="txtAddress"></span>
-                                </div>
-                                <div class="col-12 col-md-auto  p-4 mt-1">
-                                    <button type="submit" class="btn btn-block btn-success">Add User</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+
         <div class="col-12 ">
             <div class="card">
                 <div class="card-header">
@@ -137,6 +140,9 @@
                 <div class="card-body">
                     <div class="col-12">
                         <div class="row overflow-scroll overflow-visible">
+                            <div class="d-flex justify-content-end mb-3">
+                                <a class="text-primary me-0 modelc-toggler" model-target="#addModal"><i class="fa-regular fa-square-plus"></i> Add User</a>
+                            </div>
                             <table id="dataTableData" class="table table-bordered table-striped table-hover">
                                 <thead>
                                     <tr>
@@ -319,7 +325,44 @@
                 }
             });
 
+            $('#editForm')[0].reset();
             $('#myModal').css('display', 'none');
+
+        });
+
+        $('#addForm').on('submit', function (e) {
+            e.preventDefault();
+
+            var data = {
+                name: $('#addName').val(),
+                emailId: $('#addEmail').val(),
+                roleId: $('#ddlAddRole').val(),
+                mobileNumber: $('#addMobile').val(),
+                username: $('#addUsername').val(),
+                password: $('#addPassword').val(),
+                address: $('#addAddress').val()
+            };
+
+            console.log(data);
+
+            $.ajax({
+                url: '/Admin/User/CreateUser',
+                type: 'POST',
+                data: data,
+                dataType: 'json',
+                success: (res) => {
+                    debugger;
+                    if (res) {
+                        GetUsers(() => {
+                            table.clear();
+                            table.rows.add(users).draw();
+                        })
+                    }
+                }
+            });
+
+            $('#addForm')[0].reset();
+            $('#addModal').css('display', 'none');
 
         });
     </script>

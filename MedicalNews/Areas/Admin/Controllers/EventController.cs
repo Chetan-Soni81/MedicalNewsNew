@@ -46,33 +46,20 @@ namespace MedicalNews.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index([FromForm] EventModel model)
+        public async Task<IActionResult> CreateEvent(EventModel model)
         {
-            using (var repo = new CategoryRepository())
+            if(!ModelState.IsValid)
             {
-                ViewBag.EventCategories = repo.GetAllEventCategories();
-            };
-
-            int i = 0;
+                return Json(false);
+            }
 
             using (var repo = new EventRepository())
             {
-                if (!ModelState.IsValid)
-                {
-                    ViewBag.Events = repo.GetAllEvents();
-                    return View(model);
-                }
                 model.ImageUrl = await UploadImage(model.CoverImage);
+                var data = repo.CreateEvent(model);
 
-                i = repo.CreateEvent(model);
-                ViewBag.Events = repo.GetAllEvents();
+                return Json(data);
             }
-
-            ViewData["Message"] = i == 0 ? "Event Cannot be created" : "Event Created successfull";
-
-            ModelState.Clear();
-
-            return View();
         }
 
         [HttpDelete]

@@ -1,0 +1,236 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Manage Links";
+}
+@model LinksModel
+
+<div id="myModal" class="modalc rounded-3">
+
+    <!-- Modal content -->
+    <div class="modalc-content rounded-3 w-50">
+        <div class="row justify-content-end">
+            <div class="d-flex justify-content-end">
+                <span class="modalc-close modalc-close-icon">&times;</span>
+            </div>
+        </div>
+        <h3 class="text-center mb-3">Update Important Link</h3>
+        <label id="lblId" class="d-none"></label>
+        <form id="editform">
+            <div class="mb-3">
+                <label class="form-label">Title</label>
+                <input id="txtTitle" class="form-control" placeholder="Title" required/>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Url</label>
+                <input id="txtUrl" class="form-control" placeholder="https://www.example.com" required/>
+            </div>
+            <div>
+                <button class="btn btn-block btn-success">Save</button>
+                <button type="button" class="ms-2 btn btn-block btn-dark modalc-close">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<div class="container-fluid p-0">
+    <div class="notice-wrap">
+        <asp:Label ID="lblMessage" runat="server" class="notice-wrap"></asp:Label>
+    </div>
+
+    <div class="mb-3">
+        <h1 class="h3 d-inline align-middle">Manage Important Links</h1>
+    </div>
+    <div class="row">
+        <div class="col-12 ">
+            <div class="card">
+                <div class="card-body">
+                    <div class="col-12">
+                        <form mwthod="post" asp-action="Index" asp-controller="Links" asp-area="Admin">
+                            <div class="row">
+                                <div class="col-md-5 col-sm-12">
+                                    <label asp-for="WebTitle" class="form-label text-center">Title</label>
+                                    <input asp-for="WebTitle" class="form-control" placeholder="Link Title." required>
+                                    <span asp-validation-for="WebTitle" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-5 col-sm-12">
+                                    <label asp-for="WebUrl" class="form-label text-center">Web Url</label>
+                                    <input asp-for="WebUrl" class="form-control" placeholder="Please Enter the Web Url" required>
+                                    <span asp-validation-for="WebUrl" class="text-danger"></span>
+                                </div>
+                                <div class="col-2 p-4 mt-1">
+                                    <button type="submit" class="btn btn-block btn-success">Save</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 ">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">List Of All Important Links</h5>
+            </div>
+            <div class="card-body">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-hover" id="dataTableData">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Web Url</th>
+                                        <th>Created Date</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+
+        var links = [];
+        var table;
+
+        $(document).ready(() => {
+            GetLinks(() => createTable());
+        });
+
+        function GetLinks(next) {
+            $.ajax({
+                url: "Links/GetLinkJson",
+                type: "Get",
+                dataType: "json",
+                success: (response) => {
+                    links = response;
+                    next();
+                }
+            });
+        }
+
+        function createTable() {
+            table = $('#dataTableData').DataTable({
+                bProcessing: true,
+                bLengthChange: true,
+                lengthMenu: [[10, 15, 25, -1], [10, 15, 25, 'All']],
+                bfilter: true,
+                bSort: true,
+                bPaginate: true,
+                data: links,
+                columns: [
+                    {
+                        data: 'Title',
+                        render: (data, type, row, meta) => {
+                            return row.webTitle;
+                        }
+                    },
+                    {
+                        data: 'Web Url',
+                        render: (data, type, row, meta) => {
+                            return row.webUrl;
+                        }
+                    },
+                    {
+                        data: 'Created Date',
+                        render: (data, type, row, meta) => {
+                            return new Date(row.createdDate).toLocaleDateString('en-IN', { day: "2-digit", month: "2-digit", year: "numeric", hour12: true, hour: "2-digit", minute: "2-digit", second: "2-digit" });
+                        }
+                    },
+                    {
+                        data: 'Action',
+                        render: (data, type, row, meta) => {
+                            return `<a role='button' id='${row.importantLinkId}' class='btn deletebutton' style='background: #343A40' onclick='DeleteLink(this)'>
+                                                <i class="fa fa-trash text-white"></i>
+                                            </a>
+                                            <a role="button" id='${row.importantLinkId}' class="btn btn-danger" onclick='OpenModel(this)' model-target="#myModal">
+                                                <i class="fa fa-edit"></i>
+                                            </a>`;
+                        }
+                    },
+                ]
+            });
+        }
+
+        function DeleteLink(obj) {
+            var id = $(obj).attr('id');
+
+            $.ajax({
+                url: `/Admin/Links/DeleteLink/${id}`,
+                type: "Delete",
+                dataType: "json",
+                success: (res) => {
+                    if (res) {
+                        dtRow = $(obj).closest('tr');  //assigning value on click delete
+                        var stockistTable = $('#dataTableData').DataTable();
+                        stockistTable.row(dtRow).remove().draw(false);
+                    }
+                }
+            })
+        }
+
+        function OpenModel(obj) {
+            var modelid = $(obj).attr('model-target');
+
+            var id = $(obj).attr('id')
+
+            $('#lblId').val(id);
+
+            $.ajax({
+                url: `/Admin/Links/GetLinkById/${id}`,
+                type: 'Get',
+                dataType: "json",
+                success: (res) => {
+                    console.log(res)
+
+                    $('#txtTitle').val(res.webTitle);
+                    $('#txtUrl').val(res.webUrl);
+                }
+            })
+
+            $(modelid).css('display', 'block');
+        }
+
+        $('#editform').on('submit', function (event) {
+            event.preventDefault();
+            var data = {
+                importantLinkId: $('#lblId').val(),
+                webTitle: $('#txtTitle').val(),
+                webUrl: $('#txtUrl').val()
+            }
+
+            console.log(data)
+
+            $.ajax({
+                url: '/Admin/Links/UpdateLink',
+                type: "PUT",
+                data: data,
+                success: (res) => {
+                    if (res.success) {
+                        GetLinks(() => { table.clear(); table.rows.add(links).draw() });
+                    }
+
+                    $('#myModal').css('display', 'none');
+                }
+            })
+
+            $('#txtTitle').val('')
+            $('#txtUrl').val('')
+            $('#lblId').val('')
+        });
+    </script>
+
+}

@@ -1,0 +1,356 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Manage Events";
+}
+@model EventModel
+
+<div id="myModal" class="modalc p-sm-3 rounded-3">
+
+    <!-- Modal content -->
+    <div class="modalc-content rounded-3 w-50">
+        <div class="row justify-content-end">
+            <div class="d-flex justify-content-end">
+                <span class="modalc-close modalc-close-icon">&times;</span>
+            </div>
+        </div>
+        <h3 class="text-center mb-3">Edit Event Data</h3>
+        <div class="p-3">
+            <form id="editForm">
+                <div class="row">
+                    <label id="lblId" class="d-none"></label>
+                    <label id="lblImage" class="d-none"></label>
+                    <div class="mb-3 col-md-7 col-sm-12">
+                        <label for="eventTitle" class="form-label text-center">Event Title</label>
+                        <input id="txtTitle" name="eventTitle" class="form-control" Placeholder="Event Title" required />
+                    </div>
+                    <div class="mb-3 col-md-5 col-sm-12">
+                        <label for="eventCategory" class="form-label text-center">Event Category</label>
+                        <select id="ddlCategory" class="form-select">
+                            @foreach (var item in (ViewBag.EventCategories as IEnumerable<EventCategoryModel>))
+                            {
+                                <option value=@item.Id>@item.Category</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="mb-3 col-md-6 col-sm-12">
+                        <label for="sohp" class="form-label text-center">Show on Home Page</label>
+                        <select id="ddlSOHP" class="form-select" required>
+                            <option value="1">Yes</option>
+                            <option value="">No</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3 col-12 col-md-6">
+                        <label for="eventDate" class="form-label text-center">Event Date</label>
+                        <input type="date" id="txtEventDate" class="form-control" required/>
+                    </div>
+
+                    <div class="mb-3 col-12">
+                        <label for="description" class="form-label text-center">Description</label>
+                        <textarea id="txtDescription" type="tel" name=description class="form-control" Placeholder="Description" rows="3" ></textarea>
+                    </div>
+                    <div class="mb-3 col">
+                        <label for="coverImage" class="form-label text-center">Event Cover Image</label>
+                        <input id="imgCoverImage" type="file" name="coverImage" class="form-control" Placeholder="Choose Cover Image" accept="image/*" />
+                    </div>
+
+                    <div class="mb-3 col-auto py-4">
+                        <button type="submit" class="mt-1 btn btn-block btn-success">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid p-0">
+    <div class="notice-wrap">
+        <label ID="lblMessage" runat="server" class="notice-wrap"></label>
+    </div>
+    <div class="mb-3">
+        <h1 class="h3 d-inline align-middle">Manage Events</h1>
+    </div>
+    <div class="row">
+        <div class="col-12 ">
+            <div class="card">
+                <div class="card-body">
+                    <div class="col-12">
+                        <form mehtod="post" asp-action="index" asp-controller="event" enctype="multipart/form-data" asp-area="Admin">
+                            <div class="row mb-3">
+                                <div class="col-md-4 col-sm-12">
+                                    <label asp-for="EventCategoryId" class="form-label text-center">Event Category</label>
+                                    <select asp-for="EventCategoryId" class="form-select">
+                                        <option Value="">--Select Category--</option>
+                                        @foreach (var item in (ViewBag.EventCategories as IEnumerable<EventCategoryModel>))
+                                        {
+                                            <option value="@item.Id">@item.Category</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="EventCategoryId" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-8 col-sm-12">
+                                    <label asp-for="EventTitle" class="form-label text-center">Event Title</label>
+                                    <input asp-for="EventTitle" class="form-control" Placeholder="InterviewTitle.">
+                                    <span asp-validation-for="EventTitle" class="text-danger" \></span>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-12 col-sm-12">
+                                    <label asp-for=ShortDescription class="form-label text-center">Description</label>
+                                    <textarea asp-for="ShortDescription" class="form-control" TextMode="MultiLine" Rows="5"></textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+
+
+                                <div class="col-md-3 col-sm-12">
+                                    <label asp-for="ShowOnHomePage" class="form-label text-center">Show On Home Page</label>
+                                    <select asp-for="ShowOnHomePage" class="form-select">
+                                        <option Value="" >--Please Select--</option>
+                                        <option Value=true>Yes</option>
+                                        <option Value=false>No</option>
+                                    </select>
+                                    <span asp-validation-for="ShowOnHomePage" class="text-danger" ></span>
+                                </div>
+                                <div class="col-md-3 col-sm-12">
+                                    <label asp-for="EventDate" class="form-label text-center">Event Date</label>
+                                    <input type="date" asp-for="EventDate" runat="server" class="form-control">
+                                    <span asp-validation-for="EventDate" class="text-danger"></span>
+                                    @*<%--											<span ID="RequiredFieldValidator1" runat="server" ErrorMessage="Please Select." class="text-danger" ControlToValidate="ddlSOHPage" InitialValue="0" ValidationGroup="Sumbit"></span>--%>*@
+                                </div>
+                                <div class="col-md-6 col-sm-12">
+                                    <label asp-for="CoverImage" class="form-label text-center">Event Cover Image</label>
+                                    <input asp-for="CoverImage" class="form-control" accept="image/*" />
+                                    <span asp-validation-for="CoverImage" class="text-danger"></span>
+                                    @*<%--											<span ID="RequiredFieldValidator1" runat="server" ErrorMessage="Please Select." class="text-danger" ControlToValidate="ddlSOHPage" InitialValue="0" ValidationGroup="Sumbit"></span>--%>*@
+                                </div>
+
+                            </div>
+
+
+                            <div class="row">
+
+                                <div class="col-2 p-4 mt-1">
+                                    <button type="submit" class="btn btn-block btn-success">Save</button>
+                                </div>
+                                <div class="col-2 p-4 mt-1">
+                                    <button type="reset" class="btn btn-block btn-success">Reset</button>
+                                </div>
+
+                            </div>
+                        </form>
+                        <div class="row bg-success">
+                            <div class="col-md-12 col-sm-12">
+                                <label class="notice-wrap">@ViewData["Message"]</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-12 ">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">List Of All Events </h5>
+            </div>
+            <div class="card-body">
+                <div class="col-12">
+                    <div class="row">
+                        <table id="dataTableData" class="table table-bordered table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Event Category</th>
+                                    <th>S.O.H.P.</th>
+                                    <th>Event Date</th>
+                                    <th>Created Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            
+                            @*foreach (var item in (ViewBag.Events as IEnumerable<EventModel>))
+                            {
+                                <tr>
+                                    <td>@item.EventTitle</td>
+                                    <td>@item.EventCategoryName</td>
+                                    <td>@item.ShowOnHomePage</td>
+                                    <td>@item.EventDate</td>
+                                    <td>@item.CreatedDate</td>
+                                    <td>
+                                        <a role="button" href="Admin//Event/DeleteEvent/?id=@item.EventId&filepath=@item.ImageUrl" class="btn" style="background: #343A40;">
+                                            <i class="fa fa-trash text-white"></i>
+                                        </a>
+                                        <a role="button" class="btn btn-danger modelc-toggler" model-target="#myModal">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }*@
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        var table;
+        var events;
+        $(document).ready(function () {
+            GetEvents(() => CreateTable())
+        })
+
+        function GetEvents(next) {
+            $.ajax({
+                url: "/Admin/Event/GetEventsJson",
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    events = response
+                    next();
+                }
+            })
+        }
+
+        function CreateTable() {
+            table = $('#dataTableData').DataTable({
+                bProcessing: true,
+                bLengthChange: true,
+                lengthMenu: [[10, 25, -1], [10, 25, 'All']],
+                bFilter: true,
+                bSort: true,
+                bPaginate: true,
+                data: events,
+                columns: [
+                    {
+                        data: "Title",
+                        render: (data, type, row, meta) => {
+                            return row.eventTitle;
+                        }
+                    },
+                    {
+                        data: "Event Category",
+                        render: (data, type, row, meta) => {
+                            return row.eventCategoryName;
+                        }
+                    },
+                    {
+                        data: "S.O.H.P.",
+                        render: (data, type, row, meta) => {
+                            return row.showOnHomePage ? 'Yes' : 'No';
+                        }
+                    },
+                    {
+                        data: "Event Date",
+                        render: (data, type, row, meta) => {
+                            return new Date(row.eventDate).toLocaleDateString('en-IN', { day: "2-digit", month: "2-digit", year: "numeric", hour12: true, hour: "2-digit", minute: "2-digit", second: "2-digit" });
+                        }
+                    },
+                    {
+                        data: "Created Date",
+                        render: (data, type, row, meta) => {
+                            return new Date(row.createdDate).toLocaleDateString('en-IN', { day: "2-digit", month: "2-digit", year: "numeric", hour12: true, hour: "2-digit", minute: "2-digit", second: "2-digit" });
+                        }
+                    },
+                    {
+                        data: "Action",
+                        render: (data, type, row, meta) => {
+                            return `<a id="${row.eventId}" role="button" style="background: #343A40;" class="btn" onclick="DeleteEvent(this)">
+                                        <i class="fa fa-trash text-white"></i>
+                                    </a>
+                                    <a id="${row.eventId}" role="button" class="btn bg-danger modelc-toggler" model-target="#myModal" onclick="OpenModal(this)">
+                                        <i class="fa fa-edit text-white"></i>
+                                    </a>`
+                        }
+                    }
+                ]
+            })
+        }
+
+        function DeleteEvent(obj) {
+            var id = $(obj).attr('id');
+
+            $.ajax({
+                url: `/Admin/Event/DeleteEvent/${id}`,
+                type: "Delete",
+                dataType: "json",
+                success: (res) => {
+                    if (res) {
+                        dtRow = $(obj).closest('tr');  //assigning value on click delete
+                        table.row(dtRow).remove().draw(false);
+                    }
+                }
+            })
+        }
+
+        function OpenModal(obj) {
+            var modal = $(obj).attr('model-target');
+
+            var id = $(obj).attr('id');
+
+            $.ajax({
+                url: `/Admin/Event/GetEventById/${id}`,
+                type: 'GET',
+                dataType: 'json',
+                success: (res) => {
+                    //debugger;
+                    $('#lblId').val(res.eventId);
+                    $('#lblImage').val(res.imageUrl);
+                    $('#txtTitle').val(res.eventTitle);
+                    $('#txtDescription').val(res.shortDescription);
+                    $('#txtEventDate').val(res.eventDate);
+                    $('#ddlCategory').val(res.eventCategoryId.toString());
+                    $('#ddlSOHP').prop('selectedIndex', res.showOnHomePage ? 0 : 1);
+                }
+            });
+
+            $(modal).css('display', 'block');
+        }
+
+        $('#editForm').on('submit', function (e) {
+            e.preventDefault();
+
+            var data = new FormData();
+            data.append('eventId', $('#lblId').val());
+            data.append('imageUrl', $('#lblImage').val());
+            data.append('eventTitle', $('#txtTitle').val());
+            data.append('shortDescription', $('#txtDescription').val());
+            data.append('eventCategoryId', $('#ddlCategory').val());
+            data.append('showOnHomePage', Boolean($('#ddlSOHP').val()));
+            data.append('eventDate', $('#txtEventDate').val());
+            data.append('coverImage', $('#imgCoverImage')[0].files[0]);
+            console.log(data);
+
+            $.ajax({
+                url: '/Admin/Event/UpdateEvent',
+                type: 'PUT',
+                data: data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType: 'json',
+                success: (res) => {
+                    debugger;
+                    if (res) {
+                        GetEvents(() => {
+                            table.clear();
+                            table.rows.add(events).draw();
+                        })
+                    }
+                }
+            });
+
+            $('#myModal').css('display', 'none');
+
+        });
+
+    </script>
+}

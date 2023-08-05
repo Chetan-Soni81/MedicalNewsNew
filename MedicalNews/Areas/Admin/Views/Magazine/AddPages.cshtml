@@ -1,0 +1,322 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Add Pages";
+}
+
+<div id="myModal" class="modalc p-sm-3 rounded-3">
+
+    <!-- Modal content -->
+    <div class="modalc-content rounded-3 w-50">
+        <div class="row justify-content-end">
+            <div class="d-flex justify-content-end">
+                <span class="modalc-close modalc-close-icon">&times;</span>
+            </div>
+        </div>
+        <h3 class="text-center mb-3">Edit Page Data</h3>
+        <div class="p-3">
+            <form id="editForm">
+                <div class="row">
+                    <label id="lblId" class="d-none"></label>
+                    <label id="lblImage" class="d-none"></label>
+
+                    <div class="mb-3 col-12 col-md-6">
+                        <label for="pageno" class="form-label text-center">Page No</label>
+                        <input type="number" id="txtPageNo" class="form-control" required />
+                    </div>
+
+                    <div class="mb-3 col-12 col-md-6">
+                        <label for="isfree" class="form-label text-center">Is Free</label>
+                        <select id="ddlIsFree" class="form-select">
+                            <option value="1">Yes</option>
+                            <option value="">No</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3 col">
+                        <label for="pdffile" class="form-label text-center">Page PDF</label>
+                        <input id="filePdfFile" type="file" name="coverImage" class="form-control" Placeholder="Choose Page Pdf" accept="pdf/*" />
+                    </div>
+
+                    <div class="mb-3 col-auto py-4">
+                        <button type="submit" class="mt-1 btn btn-block btn-success">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="addModal" class="modalc p-sm-3 rounded-3">
+
+    <!-- Modal content -->
+    <div class="modalc-content rounded-3 w-50">
+        <div class="row justify-content-end">
+            <div class="d-flex justify-content-end">
+                <span class="modalc-close modalc-close-icon">&times;</span>
+            </div>
+        </div>
+        <h3 class="text-center mb-3">Insert Page to Magazine</h3>
+        <div class="p-3">
+            <form id="addForm">
+                <div class="row">
+                    <label id="lblId" class="d-none"></label>
+                    <label id="lblImage" class="d-none"></label>
+
+                    <div class="mb-3 col-12 col-md-6">
+                        <label for="pageno" class="form-label text-center">Page No</label>
+                        <input type="number" id="addPageNo" class="form-control" required />
+                    </div>
+
+                    <div class="mb-3 col-12 col-md-6">
+                        <label for="isfree" class="form-label text-center">Is Free</label>
+                        <select id="addIsFree" class="form-select">
+                            <option value="1">Yes</option>
+                            <option value="">No</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3 col">
+                        <label for="pdffile" class="form-label text-center">Page PDF</label>
+                        <input id="addPdfFile" type="file" name="coverImage" class="form-control" Placeholder="Choose Page Pdf" accept="pdf/*" />
+                    </div>
+
+                    <div class="mb-3 col-auto py-4">
+                        <button type="submit" class="mt-1 btn btn-block btn-success">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid p-0">
+    <div class="notice-wrap">
+        <label ID="lblMessage" runat="server" class="notice-wrap"></label>
+    </div>
+    <div class="mb-3">
+        <h1 class="h3 d-inline align-middle">Manage Pages</h1>
+    </div>
+    <div class="row">
+        <div class="col-12 ">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">List Of All Pages </h5>
+                </div>
+                <div class="card-body">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="d-flex justify-content-between mb-3">
+                                <a class="text-muted fw-bold" asp-action="index" asp-controller="magazine" asp-area="admin"><i class="fa-solid fa-arrow-left"></i> Return to Magazines</a>
+
+                                <a class="text-primary me-0 modelc-toggler" model-target="#addModal"><i class="fa-regular fa-square-plus"></i> Add Page</a>
+                            </div>
+                            <table id="dataTableData" class="table table-bordered table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Page No</th>
+                                        <th>Is Free</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+
+                                @*foreach (var item in (ViewBag.Events as IEnumerable<EventModel>))
+                                {
+                                <tr>
+                                <td>@item.EventTitle</td>
+                                <td>@item.EventCategoryName</td>
+                                <td>@item.ShowOnHomePage</td>
+                                <td>@item.EventDate</td>
+                                <td>@item.CreatedDate</td>
+                                <td>
+                                <a role="button" href="Admin//Event/DeleteEvent/?id=@item.EventId&filepath=@item.ImageUrl" class="btn" style="background: #343A40;">
+                                <i class="fa fa-trash text-white"></i>
+                                </a>
+                                <a role="button" class="btn btn-danger modelc-toggler" model-target="#myModal">
+                                <i class="fa fa-edit"></i>
+                                </a>
+                                </td>
+                                </tr>
+                                }*@
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @section scripts {
+        <script>
+            var table;
+            var pages;
+            $(document).ready(function () {
+                GetPages(() => CreateTable())
+            })
+
+            function GetPages(next) {
+                $.ajax({
+                    url: "/Admin/Magazine/GetPagesJson?magId=@ViewData["magId"]",
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (response) {
+                        pages = response
+                        next();
+                    }
+                })
+            }
+
+            function CreateTable() {
+                table = $('#dataTableData').DataTable({
+                    bProcessing: true,
+                    bLengthChange: true,
+                    lengthMenu: [[10, 25, -1], [10, 25, 'All']],
+                    bFilter: true,
+                    bSort: true,
+                    bPaginate: true,
+                    data: pages,
+                    columns: [
+                        {
+                            data: "Page No",
+                            render: (data, type, row, meta) => {
+                                return row.pageNo;
+                            }
+                        },
+                        {
+                            data: "Is Free",
+                            render: (data, type, row, meta) => {
+                                return row.isFree ? "Yes" : "No";
+                            }
+                        },
+                        {
+                            data: "Action",
+                            render: (data, type, row, meta) => {
+                                return `<a id="${row.id}" file=${row.pdfUrl} role="button" style="background: #343A40;" class="btn" onclick="DeletePage(this)">
+                                                                                    <i class="fa fa-trash text-white"></i>
+                                                                                </a>
+                                                                                <a id="${row.id}" role="button" class="btn bg-danger modelc-toggler" model-target="#myModal" onclick="OpenModal(this)">
+                                                                                    <i class="fa fa-edit text-white"></i>
+                                                                                </a>`
+                            }
+                        }
+                    ]
+                })
+            }
+
+            function DeletePage(obj) {
+                var id = $(obj).attr('id');
+                var file = $(obj).attr('file')
+
+                var data = {
+                    pageId: id,
+                    filepath: file
+                };
+
+                $.ajax({
+                    url: `/Admin/Magazine/DeletePage`,
+                    type: "POST",
+                    data: data,
+                    dataType: "json",
+                    success: (res) => {
+                        if (res) {
+                            dtRow = $(obj).closest('tr');  //assigning value on click delete
+                            table.row(dtRow).remove().draw(false);
+                        }
+                    }
+                })
+            }
+
+            function OpenModal(obj) {
+                var modal = $(obj).attr('model-target');
+
+                var id = $(obj).attr('id');
+
+                $.ajax({
+                    url: `/Admin/Magazine/GetPageById/${id}`,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: (res) => {
+                        //debugger;
+                        $('#lblId').val(res.id);
+                        $('#lblImage').val(res.pdfUrl);
+                        $('#ddlIsFree').val(res.isFree.toString())
+                        $('#txtPageNo').val(res.pageNo);
+                    }
+                });
+
+                $(modal).css('display', 'block');
+            }
+
+            $('#addForm').on('submit', function (e) {
+                e.preventDefault();
+
+                var data = new FormData();
+                data.append('magId', @ViewData["magId"])
+                data.append('pageNo', $('#addPageNo').val());
+                data.append('isFree', Boolean($('#addIsFree').val()));
+                data.append('formFile', $('#addPdfFile')[0].files[0]);
+                console.log(data);
+
+                $.ajax({
+                    url: '/Admin/Magazine/CreatePage',
+                    type: 'POST',
+                    data: data,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                    success: (res) => {
+                        debugger;
+                        if (res) {
+                            GetPages(() => {
+                                table.clear();
+                                table.rows.add(pages).draw();
+                            })
+                        }
+                    }
+                });
+
+                $('#addModal').css('display', 'none');
+
+            });
+
+            $('#editForm').on('submit', function (e) {
+                e.preventDefault();
+
+                var data = new FormData();
+                data.append('id', $('#lblId').val());
+                data.append('magId', @ViewData["magId"]);
+                data.append('pdfUrl', $('#lblImage').val());
+                data.append('pageno', $('#txtPageNo').val());
+                data.append('isFree', Boolean($('#ddlisFree').val()));
+                data.append('formFile', $('#filePdfFile')[0].files[0]);
+                console.log(data);
+
+                $.ajax({
+                    url: '/Admin/Magazine/UpdatePage',
+                    type: 'PUT',
+                    data: data,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                    success: (res) => {
+                        debugger;
+                        if (res) {
+                            GetPages(() => {
+                                table.clear();
+                                table.rows.add(pages).draw();
+                            })
+                        }
+                    }
+                });
+
+                $('#myModal').css('display', 'none');
+
+            });
+
+        </script>
+    }
+

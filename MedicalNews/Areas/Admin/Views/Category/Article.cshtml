@@ -1,0 +1,304 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Manage Article Category";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+@model ArticleCategoryModel
+<div id="myModal" class="modalc rounded-3">
+
+    <!-- Modal content -->
+    <div class="modalc-content rounded-3 w-50">
+        <div class="row justify-content-end">
+            <div class="d-flex justify-content-end">
+                <span class="modalc-close modalc-close-icon">&times;</span>
+            </div>
+        </div>
+        <h3 class="text-center mb-3">Edit Article Category</h3>
+        <div class="p-3">
+            <form id="editForm">
+                <label id="lblId" class="d-none"></label>
+                <div class="row">
+                    <div class="mb-3 col-12 col-lg-6">
+                        <label for="Sno" class="form-label text-center">Serial Number:</label>
+                        <input id="txtSno" class="form-control" name="Sno" placeholder="S.No." type="number" required />
+                    </div>
+                    <div class="mb-3 col-12 col-lg-6">
+                        <label for="Category" class="form-label text-center">Article Category</label>
+                        <input id="txtCategory" class="form-control" name="Category" placeholder="Please Enter the Article Category" required />
+                    </div>
+
+                    <div class="mb-3 col-12 col-lg">
+                        <label for="ShowOnHomePage" class="form-label text-center">Show On Home Page</label>
+                        <select id="ddlSOHP" class="form-select" required>
+                            @*<option value="">--Please Select--</option>*@
+                            <option value=1>Yes</option>
+                            <option value=>No</option>
+                        </select>
+                    </div>
+                    <div class="mb-3 col-12 col-lg">
+                        <label for="ShowOnMainMenu" class="form-label text-center">Show On Main Menu</label>
+                        <select id="ddlSOMM" class="form-select" required>
+                            @*<option value="">--Please Select--</option>*@
+                            <option value=1>Yes</option>
+                            <option value=>No</option>
+                        </select>
+                    </div>
+
+                    <div class=" col-12 col-lg-auto py-lg-4">
+                        <button type="submit" class="btn btn-block btn-success mt-lg-1">Save</button>
+                        <button type="button" class="ms-2 mt-lg-1 btn btn-dark modalc-close">Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid p-0">
+    @*<div class="notice-wrap">
+        <label class="notice-wrap">@ViewData["Notice"]</label>
+    </div>*@
+    <div class="mb-3">
+        <h1 class="h3 d-inline align-middle">Manage Article Category</h1>
+    </div>
+    <div class="row">
+        <div class="col-12 ">
+            <div class="card">
+                <div class="card-body">
+                    <div class="col-12">
+                        <form method="post" asp-action="Article" asp-controller="Category" asp-area="Admin">
+                            <div class="row">
+                                <div class="col-md-2 col-sm-12">
+                                    <label asp-for="Sno" class="form-label text-center">Serial Number:</label>
+                                    <input class="form-control" asp-for="Sno" placeholder="S.No." type="number" />
+                                    <span asp-validation-for="Sno" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-4 col-sm-12">
+                                    <label asp-for="Category" class="form-label text-center">Article Category</label>
+                                    <input class="form-control" asp-for="Category" placeholder="Please Enter the Article Category" />
+                                    <span asp-validation-for=Category class="text-danger"></span>
+                                </div>
+
+                                <div class="col-md-3 col-sm-12">
+                                    <label asp-for="ShowOnMainMenu" class="form-label text-center">Show On Main Menu</label>
+                                    <select asp-for="ShowOnMainMenu" class="form-select">
+                                        <option value="">--Please Select--</option>
+                                        <option value=true>Yes</option>
+                                        <option value=false>No</option>
+                                    </select>
+                                    <span asp-validation-for=ShowOnMainMenu class="text-danger"></span>
+                                </div>
+                                <div class="col-md-3 col-sm-12">
+                                    <label asp-for="ShowOnHomePage" class="form-label text-center">Show On Home Page</label>
+                                    <select class="form-select" asp-for="ShowOnHomePage">
+                                        <option value="">--Please Select--</option>
+                                        <option value=true>Yes</option>
+                                        <option value=false>No</option>
+                                    </select>
+                                    <span asp-validation-for=ShowOnHomePage class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-4 p-4 mt-1">
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-block btn-success">Add</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 ">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">List Of All Article Category</h5>
+                </div>
+                <div class="card-body">
+                    <div class="col-12">
+                        <div class="row">
+                            <table id="dataTableData" class="table table-bordered table-striped table-hover" ng-for>
+                                <thead>
+                                    <tr>
+                                        <th>S/no.</th>
+                                        <th>Article Category</th>
+                                        <th>Show on Home Page</th>
+                                        <th>Show on Main Menu</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+
+                                @*foreach (var item in (ViewBag.ArticleCategories as IEnumerable<CategoryModel>))
+                                {
+                                <tr>
+                                <td>@item.Sno</td>
+                                <td>@item.Category</td>
+                                <td>@item.ShowOnHomePage</td>
+                                <td>@item.ShowOnMainMenu</td>
+                                <td class="d-flex gap-2">
+                                <a role="button" style="background: #343A40;" class="btn" href="/Admin/Category/ArticleDelete/@item.Id">
+                                <i class="fa fa-trash text-white"></i>
+                                </a>
+                                <a role class="btn bg-danger modelc-toggler" model-target="#myModal">
+                                <i class="fa fa-edit text-white"></i>
+                                </a>
+                                </td>
+                                </tr>
+                                }*@
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        var table;
+        var category;
+        $(document).ready(function () {
+            GetCategory(() => CreateTable())
+        })
+
+        function GetCategory(next) {
+            $.ajax({
+                url: "/Admin/Category/GetArticleJson",
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    category = response
+                    next();
+                }
+            })
+        }
+
+        function CreateTable() {
+            table = $('#dataTableData').DataTable({
+                bProcessing: true,
+                bLengthChange: true,
+                lengthMenu: [[10, 25, -1], [10, 25, 'All']],
+                bFilter: true,
+                bSort: true,
+                bPaginate: true,
+                data: category,
+                columns: [
+                    {
+                        data: 'S/no.',
+                        render: (data, type, row, meta) => {
+                            return row.sno;
+                        }
+                    },
+                    {
+                        data: "Article Category",
+                        render: (data, type, row, meta) => {
+                            return row.category;
+                        }
+                    },
+                    {
+                        data: "Show on Home Page",
+                        render: (data, type, row, meta) => {
+                            return row.showOnHomePage ? "Yes" : "No";
+                        }
+                    },
+                    {
+                        data: "Show on Main Menu",
+                        render: (data, type, row, meta) => {
+                            return row.showOnMainMenu ? "Yes" : "No";
+                        }
+                    },
+                    {
+                        data: "Actions",
+                        render: (data, type, row, meta) => {
+                            return `<a role="button" class="btn text-white" style="background: #343A40" href='ArticleSub/${row.id}'>
+                                        <i class="fa fa-plus" aria-hidden="true"></i> Sub Category
+                                    </a>
+                                    <a id="${row.id}" role="button" style="background: #343A40;" class="btn" onclick="DeleteArticle(this)">
+                                        <i class="fa fa-trash text-white"></i>
+                                    </a>
+                                    <a id="${row.id}" role="button" class="btn bg-danger modelc-toggler" model-target="#myModal" onclick=(OpenModal(this))>
+                                        <i class="fa fa-edit text-white"></i>
+                                    </a>`
+                        }
+                    }
+                ]
+            })
+        }
+
+        function DeleteArticle(obj) {
+            var id = $(obj).attr('id');
+
+            $.ajax({
+                url: `/Admin/Category/DeleteArticle/${id}`,
+                type: "Delete",
+                dataType: "json",
+                success: (res) => {
+                    if (res) {
+                        dtRow = $(obj).closest('tr');  //assigning value on click delete
+                        var stockistTable = $('#dataTableData').DataTable();
+                        stockistTable.row(dtRow).remove().draw(false);
+                    }
+                }
+            })
+        }
+
+        function OpenModal(obj) {
+            var modal = $(obj).attr('model-target');
+
+            var id = $(obj).attr('id');
+
+            $.ajax({
+                url: `/Admin/Category/GetArticleById/${id}`,
+                type: 'GET',
+                dataType: 'json',
+                success: (res) => {
+                    //debugger;
+                    $('#lblId').val(res.id);
+                    $('#txtSno').val(res.sno);
+                    $('#txtCategory').val(res.category);
+                    $('#ddlSOHP').prop('selectedIndex', res.showOnHomePage ? 0 : 1);
+                    $('#ddlSOMM').prop('selectedIndex',  res.showOnMainMenu ? 0 : 1);
+
+                }
+            })
+
+            $(modal).css('display', 'block');
+        }
+
+        $('#editForm').on('submit', function (e) {
+            e.preventDefault();
+
+            var data = {
+                id: $('#lblId').val(),
+                sno: $('#txtSno').val(),
+                category: $('#txtCategory').val(),
+                showOnHomePage: Boolean($('#ddlSOHP').val()),
+                showOnMainMenu: Boolean($('#ddlSOMM').val())
+            };
+
+            console.log(data);
+
+            $.ajax({
+                url: '/Admin/Category/UpdateArticle',
+                type: 'PUT',
+                data: data,
+                dataType: 'json',
+                success: (res) => {
+                    if(res) {
+                        GetCategory(() => {
+                            table.clear();
+                            table.rows.add(category).draw();
+                        })
+                    }
+                }
+            });
+
+            $('#myModal').css('display', 'none');
+
+        })
+    </script>
+}

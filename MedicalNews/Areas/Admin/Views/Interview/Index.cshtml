@@ -1,0 +1,310 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Manage Interviews";
+}
+@model MedicalNews.Areas.Admin.Models.InterviewModel
+
+<div id="myModal" class="modalc p-sm-3 rounded-3">
+
+    <!-- Modal content -->
+    <div class="modalc-content rounded-3 w-50">
+        <div class="row justify-content-end">
+            <div class="d-flex justify-content-end">
+                <span class="modalc-close modalc-close-icon">&times;</span>
+            </div>
+        </div>
+        <h3 class="text-center mb-3">Edit User Data</h3>
+        <div class="p-3">
+            <form id="editForm">
+                <div class="row">
+                    <label id="lblId" class="d-none"></label>
+                    <div class="mb-3 col-md-7 col-sm-12">
+                        <label for="interviewTitle" class="form-label text-center">Interview Title</label>
+                        <input id="txtTitle" name="InterviewTitle" class="form-control" Placeholder="Interview Title" required />
+                    </div>
+                    <div class="mb-3 col-md-5 col-sm-12">
+                        <label for="interviewCategory" class="form-label text-center">Interview Category</label>
+                        <select id="ddlCategory" class="form-select">
+                            @foreach (var item in (ViewBag.InterviewCategories as IEnumerable<InterviewCategoryModel>))
+                            {
+                                <option value=@item.Id>@item.InterviewCategory</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3 col-md-7 col-sm-12">
+                        <label for="videourl" class="form-label text-center">Video Url</label>
+                        <input id="txtVideoUrl" type="tel" name=videourl class="form-control" Placeholder="Mobile" required>
+                    </div>
+
+                    <div class="mb-3 col-md-5 col-sm-12">
+                        <label for="sohp" class="form-label text-center">Show on Home Page</label>
+                        <select id="ddlSOHP" class="form-control" required>
+                            <option value="1">Yes</option>
+                            <option value="">No</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3 col-12">
+                        <label for="descritption" class="form-label text-center">Interview Description</label>
+                        <textarea id="txtDescription" name="Address" class="form-control" Placeholder="Address" rows="3"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-block btn-success">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid p-0">
+    <div class="notice-wrap">
+        <asp:Label ID="lblMessage" runat="server" class="notice-wrap"></asp:Label>
+    </div>
+    <div class="mb-3">
+        <h1 class="h3 d-inline align-middle">Manage Interviews</h1>
+    </div>
+    <div class="row">
+        <div class="col-12 ">
+            <div class="card">
+                <div class="card-body">
+                    <div class="col-12">
+                        <form method="post" asp-action="Index" asp-controller="Interview" asp-area="Admin">
+                            <div class="row mb-3">
+                                <div class="col-md-12 col-sm-12">
+                                    <label asp-for="InterviewTitle" class="form-label text-center">Interview Title</label>
+                                    <input asp-for="InterviewTitle" class="form-control" placeholder="Interview Title.">
+                                    <span asp-validation-for="InterviewTitle" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-4 col-sm-12">
+                                    <label asp-for="InterViewCategoryId" class="form-label text-center">Interview Category</label>
+                                    <select asp-for="InterViewCategoryId" class="form-select">
+                                        <option Value="">--Select Category--</option>
+                                        @foreach (var item in (ViewBag.InterviewCategories as IEnumerable<InterviewCategoryModel>))
+                                        {
+                                            <option value=@item.Id>@item.InterviewCategory</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="InterViewCategoryId" class="text-danger" ControlToValidate="ddlInterviewCategory" InitialValue="0" ValidationGroup="Sumbit"></span>
+                                </div>
+                                <div class="col-md-5 col-sm-12">
+                                    <label asp-for="VideoUrl" class="form-label text-center">Video Url</label>
+                                    <input asp-for="VideoUrl" class="form-control" placeholder="Enter Video  Url">
+                                    <span asp-validation-for="VideoUrl" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-3 col-sm-12">
+                                    <label asp-for="ShowOnHomePage" class="form-label text-center">Show On Home Page</label>
+                                    <select asp-for="ShowOnHomePage" class="form-select">
+                                        <option Value="">--Please Select--</option>
+                                        <option Value=true>Yes</option>
+                                        <option Value=false>No</option>
+
+                                    </select>
+                                    <span asp-validation-for="ShowOnHomePage" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+
+                                <div class="col-12 col-sm-12">
+                                    <label asp-for="InterviewDescription" class="form-label text-center">Description</label>
+                                    <textarea asp-for="InterviewDescription" class="form-control" Rows="5"></textarea>
+                                </div>
+                                <div class="row mb-3">
+
+                                    <div class="col-2 p-4 mt-1">
+                                        <button type="submit" class="btn btn-block btn-success">Save</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </form>
+                        <div class="row bg-success">
+                            <div class="col-md-12 col-sm-12">
+                                <asp:Label ID="lblmsg" runat="server" class="notice-wrap"></asp:Label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-12 ">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">List Of All Interviews </h5>
+            </div>
+            <div class="card-body">
+                <div class="col-12">
+                    <div class="row">
+                        <table id="dataTableData" class="table table-bordered table-striped table-hover">
+                            <thead>
+                                <tr>
+
+                                    <th>Title</th>
+                                    <th>Category</th>
+                                    <th>Show on Home Page</th>
+                                    <th>Created Date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        var table;
+        var interviews;
+        $(document).ready(function () {
+            GetInterviews(() => CreateTable())
+        })
+
+        function GetInterviews(next) {
+            $.ajax({
+                url: "/Admin/Interview/GetInterviewsJson",
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    interviews = response
+                    next();
+                }
+            })
+        }
+
+        function CreateTable() {
+            table = $('#dataTableData').DataTable({
+                bProcessing: true,
+                bLengthChange: true,
+                lengthMenu: [[10, 25, -1], [10, 25, 'All']],
+                bFilter: true,
+                bSort: true,
+                bPaginate: true,
+                data: interviews,
+                columns: [
+                    {
+                        data: "Title",
+                        render: (data, type, row, meta) => {
+                            return row.interviewTitle;
+                        }
+                    },
+                    {
+                        data: "Category",
+                        render: (data, type, row, meta) => {
+                            return row.interViewCategoryName;
+                        }
+                    },
+                    {
+                        data: "Show on Home Page",
+                        render: (data, type, row, meta) => {
+                            return row.showOnHomePage ? 'Yes' : 'No';
+                        }
+                    },
+                    {
+                        data: "Created Date",
+                        render: (data, type, row, meta) => {
+                            return new Date(row.createdDate).toLocaleDateString('en-IN', { day: "2-digit", month: "2-digit", year: "numeric", hour12: true, hour: "2-digit", minute: "2-digit", second: "2-digit" });
+                        }
+                    },
+                    {
+                        data: "Action",
+                        render: (data, type, row, meta) => {
+                            return `<a id="${row.interviewId}" role="button" style="background: #343A40;" class="btn" onclick="DeleteInterview(this)">
+                                                                                                                                <i class="fa fa-trash text-white"></i>
+                                                                                                                            </a>
+                                                                                                                            <a id="${row.interviewId}" role="button" class="btn bg-danger modelc-toggler" model-target="#myModal" onclick="OpenModal(this)">
+                                                                                                                                <i class="fa fa-edit text-white"></i>
+                                                                                                                            </a>`
+                        }
+                    }
+                ]
+            })
+        }
+
+        function DeleteInterview(obj) {
+            var id = $(obj).attr('id');
+
+            $.ajax({
+                url: `/Admin/Interview/DeleteInterview/${id}`,
+                type: "Delete",
+                dataType: "json",
+                success: (res) => {
+                    if (res) {
+                        dtRow = $(obj).closest('tr');  //assigning value on click delete
+                        var stockistTable = $('#dataTableData').DataTable();
+                        stockistTable.row(dtRow).remove().draw(false);
+                    }
+                }
+            })
+        }
+
+        function OpenModal(obj) {
+            var modal = $(obj).attr('model-target');
+
+            var id = $(obj).attr('id');
+
+            $.ajax({
+                url: `/Admin/Interview/GetInterviewById/${id}`,
+                type: 'GET',
+                dataType: 'json',
+                success: (res) => {
+                    //debugger;
+                    $('#lblId').val(res.interviewId);
+                    $('#txtTitle').val(res.interviewTitle);
+                    $('#txtVideoUrl').val(res.videoUrl);
+                    $('#txtDescription').val(res.interviewDescription);
+                    $('#ddlCategory').val(res.interViewCategoryId.toString());
+                    $('#ddlSOHP').prop('selectedIndex', res.showOnHomePage ? 0 : 1);
+                }
+            });
+
+            $(modal).css('display', 'block');
+        }
+
+        $('#editForm').on('submit', function (e) {
+            e.preventDefault();
+
+            var data = {
+                interviewId: $('#lblId').val(),
+                interviewTitle: $('#txtTitle').val(),
+                videoUrl: $('#txtVideoUrl').val(),
+                interviewDescription: $('#txtDescription').val(),
+                interViewCategoryId: $('#ddlCategory').val(),
+                showOnHomePage: Boolean($('#ddlSOHP').val())
+            };
+
+            console.log(data);
+
+            $.ajax({
+                url: '/Admin/Interview/UpdateInterview',
+                type: 'PUT',
+                data: data,
+                dataType: 'json',
+                success: (res) => {
+                    debugger;
+                    if (res) {
+                        GetInterviews(() => {
+                            table.clear();
+                            table.rows.add(interviews).draw();
+                        })
+                    }
+                }
+            });
+
+            $('#myModal').css('display', 'none');
+
+        });
+    </script>
+}

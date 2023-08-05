@@ -1,0 +1,183 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MedialNews</title>
+    <link rel="stylesheet" href="~/css/app.css" />
+    @*<link href="~/css/app2.css" rel="stylesheet" />*@
+    <link rel="stylesheet" href="~/css/notice.css" />
+    <link rel="stylesheet" href="~/lib/datatable/datatables.min.css" />
+    <link rel="stylesheet" href="~/lib/fontawesome/css/all.min.css" />
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body ng-app="MyApp">
+    <div class="wrapper">
+
+        <nav id="sidebar" class="sidebar js-sidebar">
+            <div class="sidebar-content js-simplebar">
+                <a class="sidebar-brand" asp-controller="" asp-action="" asp-area="admin">
+                    <span class="align-middle" style="font-family: forte; font-size: 24px">Admin Dashboard</span>
+                </a>
+                <ul class="sidebar-nav">
+                    <li class="sidebar-item active">
+                        <a class="sidebar-link" asp-controller="" asp-action="" asp-area="admin">
+                            <i class="fas fa-dashboard"></i><span class="align-middle">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a data-bs-target="#dashboards" data-bs-toggle="collapse" class="sidebar-link collapsed" aria-expanded="false">
+                            <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Master</span>
+                        </a>
+                        <ul id="dashboards" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar" style="">
+                            <li class="sidebar-item"><a class="sidebar-link" asp-controller="Category" asp-action="Article">Article Category</a></li>
+                            <li class="sidebar-item"><a class="sidebar-link" asp-controller="Category" asp-action="Event">Event Category</a></li>
+                            <li class="sidebar-item"><a class="sidebar-link" asp-controller="Category" asp-action="Interview">Interview Category</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a data-bs-target="#Article" data-bs-toggle="collapse" class="sidebar-link collapsed" aria-expanded="false">
+                            <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Article</span>
+                        </a>
+                        <ul id="Article" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar" style="">
+                            <li class="sidebar-item"><a class="sidebar-link" asp-controller="Article" asp-action="Add">Add Article</a></li>
+                            <li class="sidebar-item"><a class="sidebar-link" asp-controller="Article" asp-action="Index">View Article</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" asp-controller="User" asp-action="Index">
+                            <i class="fas fa-map-location"></i><span class="align-middle"> Manage User</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" asp-controller="Article" asp-action="Add">
+                            <i class="fa-solid fa-briefcase"></i><span class="align-middle">Article</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" asp-controller="Magazine" asp-action="Index">
+                            <i class="fa-solid fa-briefcase"></i><span class="align-middle">Magazine</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" asp-controller="Event" asp-action="Index">
+                            <i class="fa-solid fa-briefcase"></i><span class="align-middle">Event</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" asp-controller="Interview" asp-action="Index">
+                            <i class="fa-solid fa-briefcase"></i><span class="align-middle">Interview</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" asp-controller="Ads" asp-action="Index">
+                            <i class="fa-solid fa-briefcase"></i><span class="align-middle">Manage Adds</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" asp-controller="Links" asp-action="Index">
+                            <i class="fa-solid fa-briefcase"></i><span class="align-middle">Important Links</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+
+        <div class="container-fluid bg-white">
+            @*<nav class="navbar navbar-expand navbar-light navbar-bg">
+            <a class="sidebar-toggle js-sidebar-toggle">
+            <i class="hamburger align-self-center"></i>
+            </a>
+            <div class="navbar-collapse collapse">
+            <ul class="navbar-nav navbar-align">
+            <!--Notification Part-->
+            <!--Profile Settings part-->
+            <li class="nav-item dropdown">
+            @*
+            <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
+            <i class="align-middle" data-feather="settings"></i>
+            </a>
+            <a class="nav-link dropdown-toggle d-none d-sm-inline-block" role="button" href="#" data-bs-toggle="dropdown">
+            <img src="~/img/icons/signin.jpg" class="avatar img-fluid rounded me-1" alt="Charles Hall" />
+            <span class="text-dark">Welcome Admin</span>
+            </a>
+            <ul class="dropdown-menu" style="z-index:10000;">
+            <li class="dropdown-item">
+            <a href="#"><i class="align-middle me-1" data-feather="user"></i>Profile</a>
+            </li>
+            <li class="dropdown-divider"></li>
+            <li class="dropdown-divider"></li>
+            <li class="dropdown-item">
+            <a><form method="post" asp-controller="Admin" asp-action="Logout">Logout</form></a>
+            </li>
+            </ul>
+            </li>
+
+            </ul>
+            </div>
+            </nav>*@
+
+            <nav class="navbar navbar-expand bg-body-white">
+                <div class="container-fluid">
+                    <a class="sidebar-toggle js-sidebar-toggle">
+                        <i class="hamburger align-self-center"></i>
+                    </a>
+                    <div class="collapse navbar-collapse">
+                        <ul class="navbar-nav navbar-align">
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src="~/img/icons/signin.jpg" class="avatar img-fluid rounded me-1" alt="Charles Hall" />
+                                    <span class="text-dark">Welcome Admin</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="dropdown-item">
+                                        <a href="#"><i class="align-middle me-1" data-feather="user"></i>Profile</a>
+                                    </li>
+                                    <li class="dropdown-divider"></li>
+                                    <li class="dropdown-item">
+                                        <a asp-controller="Home" asp-action="Logout" asp-area="Admin">
+                                            Logout
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <main role="main" class=" content bg-light">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2023 - MedialNews.co.in<a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/datatable/datatables.min.js"></script>
+    @*<script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>*@
+    <script src="~/lib/fontawesome/js/all.min.js"></script>
+    <script src="~/js/app.js"></script>
+    <script src="~/lib/angular/angular.js"></script>
+    <script src="~/lib/angular/angular-uibootstrap.min.js"></script>
+    <script src="~/js/myapp.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+
+</html>

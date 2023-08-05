@@ -1,0 +1,296 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>Medical News - @ViewData["title"]</title>
+    <!-- MDB icon -->
+    <link rel="icon" href="img/mdb-favicon.ico" type="image/x-icon" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/lib/fontawesome/css/all.min.css" />
+    <!-- Google Fonts Roboto -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" />
+    <!-- MDB -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/mdb.min.css" />
+    <link rel="stylesheet" href="~/css/style.css" />
+
+    <!-- slider -->
+    <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="~/lib/jquery/dist/jquery.flipster.min.css">
+
+  <link rel="stylesheet" href="~/lib/owlcarousel/assets/owl.carousel.min.css">
+  <link rel="stylesheet" href="~/lib/owlcarousel/assets/owl.theme.default.min.css">
+</head>
+<body>
+<header class="sticky-top bg-white headertop">
+    <div class="container-fluid py-2 d-lg-block d-none border-bottom">
+        <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-between">
+                <div>
+                    <img src="~/img/icons/logo.svg" alt="logo" class="img-fluid logo">
+                </div>
+                <div class="d-flex align-items-center justify-content-between">
+
+                    <form class="form-inline">
+                        <div class="md-form my-0">
+                            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+                            <button class="btn p-1 shadow-none"><i class="fas fa-search"></i></button>
+                        </div>
+                    </form>
+
+                    <div class="dropdown">
+                        <button class="btn  dropdown-toggle shadow-none" type="button" id="dropdownMenu5" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                            Lang
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenu5">
+                            <a class="dropdown-item" href="#">Hindi</a>
+                            <a class="dropdown-item" href="#">English</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!--Navbar-->
+    <nav class="navbar navbar-expand-lg  shadow-none">
+
+        <!-- Navbar brand -->
+        <a class="navbar-brand d-lg-none" href="index.html">
+            <img src="img/logo.svg" alt="logo" class="img-fluid logo">
+        </a>
+
+        <!-- Collapse button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
+                aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-stream"></i>
+        </button>
+
+        <!-- Collapsible content -->
+        <div class="collapse navbar-collapse" id="basicExampleNav">
+
+            <!-- Links -->
+            <ul class="navbar-nav m-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        Home
+
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Pricing</a>
+                </li>
+
+                <!-- Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                    <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>
+
+            </ul>
+            <!-- Links -->
+
+
+        </div>
+        <!-- Collapsible content -->
+
+    </nav>
+    <!--/.Navbar-->
+</header>
+
+@RenderBody()
+
+<footer class=" font-small bg-footer pt-4">
+
+    <!-- Footer Links -->
+    <div class="container  text-md-left">
+
+        <!-- Grid row -->
+        <div class="row">
+
+            <!-- Grid column -->
+            <div class="col-md-5 mt-md-0 mt-3">
+
+                <!-- Content -->
+                <img src="~/img/icons/logo.svg" alt="logo" class="img-fluid logo">
+                <p class="pt-3">TheHealthSite.com is India's fastest growing health information site with a team of health professionals and writers committed to providing unique, authentic, credible, well-researched, and timely information on topics related to physical and mental health. We use the latest interactive tools, graphics, live webinars and events, interviews, medical imagery, and more.</p>
+                <hr class=" pb-3">
+
+                <p><i class="fas fa-map-marker-alt p-2 bg-danger text-light rounded" style="width: 30px; height: 30px;"></i> <a href="#" class="ft-link">Bus Stop Laxmi nagar, Delhi, India</a></p>
+
+                <p><i class="fas fa-phone p-2 bg-danger text-light rounded" style="width: 30px; height: 30px;"></i> <a href="#" class="ft-link">+91-987654xxxx</a></p>
+
+                <p><i class="fas fa-envelope p-2 bg-danger text-light rounded" style="width: 30px; height: 30px;"></i> <a href="#" class="ft-link">contact@gmail.com</a></p>
+
+            </div>
+            <!-- Grid column -->
+            <!-- Grid column -->
+            <div class="col-md-4 mb-md-0 mb-3">
+
+                <!-- Links -->
+                <h5 class="text-uppercase h5">USEFUL LINKS</h5>
+
+                <div class="row">
+                    <div class="col">
+                        <ul class="list-unstyled">
+                            <li><a href="#!" class="ft-link">Weight Loss</a></li>
+                            <li><a href="#!" class="ft-link">Keto Diet Tips</a></li>
+                            <li><a href="#!" class="ft-link">Skin Care Tips</a></li>
+                            <li><a href="#!" class="ft-link">Intermittent Fasting</a></li>
+                            <li><a href="#!" class="ft-link">Apple Cider Vinegar</a></li>
+                            <li><a href="#!" class="ft-link">Ashwagandha</a></li>
+                            <li><a href="#!" class="ft-link">Cancer</a></li>
+                            <li><a href="#!" class="ft-link">Pneumonia</a></li>
+                            <li><a href="#!" class="ft-link">Diarrhoea</a></li>
+                            <li><a href="#!" class="ft-link">Dengue</a></li>
+                            <li><a href="#!" class="ft-link">Typhoid</a></li>
+                            <li><a href="#!" class="ft-link">Tuberculosis</a></li>
+                            <li><a href="#!" class="ft-link">Chickenpox</a></li>
+                            <li><a href="#!" class="ft-link">Chikungunya</a></li>
+
+                        </ul>
+                    </div>
+                    <div class="col">
+                        <ul class="list-unstyled">
+                            <li><a href="#!" class="ft-link">Weight Loss</a></li>
+                            <li><a href="#!" class="ft-link">Keto Diet Tips</a></li>
+                            <li><a href="#!" class="ft-link">Skin Care Tips</a></li>
+                            <li><a href="#!" class="ft-link">Intermittent Fasting</a></li>
+                            <li><a href="#!" class="ft-link">Apple Cider Vinegar</a></li>
+                            <li><a href="#!" class="ft-link">Ashwagandha</a></li>
+                            <li><a href="#!" class="ft-link">Cancer</a></li>
+                            <li><a href="#!" class="ft-link">Pneumonia</a></li>
+                            <li><a href="#!" class="ft-link">Diarrhoea</a></li>
+                            <li><a href="#!" class="ft-link">Dengue</a></li>
+                            <li><a href="#!" class="ft-link">Typhoid</a></li>
+                            <li><a href="#!" class="ft-link">Tuberculosis</a></li>
+                            <li><a href="#!" class="ft-link">Chickenpox</a></li>
+                            <li><a href="#!" class="ft-link">Chikungunya</a></li>
+
+                        </ul>
+                    </div>
+
+                </div>
+
+
+
+
+
+            </div>
+            <!-- Grid column -->
+            <!-- Grid column -->
+            <div class="col-md-3 mb-md-0 mb-3">
+
+                <!-- Links -->
+                <h5 class="text-uppercase h5">Follow us</h5>
+
+                <ul class="list-unstyled">
+                    <!-- Facebook -->
+                    <a class="btn text-white btn-sm" style="background-color: #3b5998;" href="#!" role="button">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+
+                    <!-- Twitter -->
+                    <a class="btn text-white btn-sm" style="background-color: #55acee;" href="#!" role="button">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+
+                    <!-- Google -->
+                    <a class="btn text-white btn-sm" style="background-color: #dd4b39;" href="#!" role="button">
+                        <i class="fab fa-google"></i>
+                    </a>
+
+                    <!-- Instagram -->
+                    <a class="btn text-white btn-sm" style="background-color: #ac2bac;" href="#!" role="button">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+
+                    <!-- Linkedin -->
+                    <a class="btn text-white btn-sm" style="background-color: #0082ca;" href="#!" role="button">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+
+                </ul>
+
+            </div>
+            <!-- Grid column -->
+
+        </div>
+        <!-- Grid row -->
+
+    </div>
+    <!-- Footer Links -->
+</footer>
+<!-- Footer -->
+
+<div class="d-flex flex-wrap justify-content-between px-md-5 copyright">
+    <div><small class="px-2">copyright &copy; 2023 <b>The Health Site.com</b> all rights</small></div>
+    <div><small class="px-2">Design By AO Software Solution</small></div>
+</div>
+
+
+
+
+<!-- jQuery -->
+<script type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="~/js/popper.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="~/lib/js/mdb.min.js"></script>
+<!-- Your custom scripts (optional) -->
+<script type="text/javascript"></script>
+
+<script src="~/lib/owlcarousel/owl.carousel.min.js"></script>
+<script>
+    $('.owl-carousel').owlCarousel({
+        items: 1,
+        loop: true,
+        margin: 10,
+        autoplay: true,
+        autoplayTimeout: 5000,
+        autoplayHoverPause: true,
+        responsive: {
+            600: {
+                items: 4
+            }
+        }
+    });
+</script>
+
+<script src="dist/jquery.flipster.min.js"></script>
+<script>
+    var coverflow = $("#coverflow").flipster();
+    var carousel = $("#carousel").flipster({
+        style: 'carousel',
+        spacing: -0.5,
+        nav: true,
+        buttons: true,
+    });
+    var wheel = $("#wheel").flipster({
+        style: 'wheel',
+        spacing: 0
+    });
+    var flat = $("#flat").flipster({
+        style: 'flat',
+        spacing: -0.25
+    });
+</script>
+
+    </body>
+</html>
+

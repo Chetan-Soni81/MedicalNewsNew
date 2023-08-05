@@ -1,0 +1,226 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Manage Interview Category";
+}
+@model InterviewCategoryModel
+
+<div id="myModal" class="modalc rounded-3">
+
+    <!-- Modal content -->
+    <div class="modalc-content rounded-3 w-50">
+        <div class="row justify-content-end">
+            <div class="d-flex justify-content-end">
+                <span class="modalc-close modalc-close-icon">&times;</span>
+            </div>
+        </div>
+        <h3 class="text-center mb-3">Update Interview Category</h3>
+        <div class="p-3">
+            <form id="editForm">
+                <label id="lblId" class="d-none"></label>
+                <div class="row">
+                    <div class="mb-3 col-4 col-lg-3">
+                        <label for="sno" class="form-label text-center">Serial Number</label>
+                        <input id="txtSno" class="form-control" name="sno" placeholder="Serial Number"/>
+                    </div>
+                    <div class="mb-3 col-8 col-lg">
+                        <label for="Category" class="form-label text-center">Interview Category</label>
+                        <input id="txtCategory" class="form-control" name="Category" placeholder="Please Enter the Article Category" required />
+                    </div>
+
+                    <div class=" col-12 col-lg-auto py-lg-4">
+                        <button type="submit" class="btn btn-block btn-success mt-lg-1">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid p-0">
+    <div class="notice-wrap">
+        <asp:Label ID="lblMessage" runat="server" CssClass="notice-wrap"></asp:Label>
+    </div>
+    <div class="mb-3">
+        <h1 class="h3 d-inline align-middle">Manage Interview Category</h1>
+    </div>
+    <div class="row">
+        <div class="col-12 ">
+            <div class="card">
+                <div class="card-body">
+                    <div class="col-12">
+                        <form method="post" asp-action="Interview" asp-controller="category" asp-area="Admin">
+                            <div class="row">
+                                <div class="col-md-2 col-sm-12">
+                                    <label asp-for="Sno" class="form-label text-center">S. No.</label>
+                                    <input class="form-control" asp-for="Sno" placeholder="S.No." />
+                                    <span class="text-danger" asp-validation-for="Sno"></span>
+                                </div>
+                                <div class="col-md-8 col-sm-12">
+                                    <label asp-for="InterviewCategory" class="form-label text-center">Interview Category</label>
+                                    <input class="form-control" asp-for="InterviewCategory" placeholder="Please Enter the Interview Category" />
+                                    <span class="text-danger" asp-validation-for="InterviewCategory"></span>
+                                </div>
+                                <div class="col-2 p-4 mt-1">
+                                    <button type="submit" class="btn btn-block btn-success">Save</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 ">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">List Of All Interview Category</h5>
+            </div>
+            <div class="card-body">
+                <div class="col-12">
+                    <div class="row">
+                        <table id="dataTableData" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Serial Number</th>
+                                    <th>Interview Category</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        var table;
+        var category;
+        $(document).ready(function () {
+            GetCategory(() => CreateTable())
+        })
+
+        function GetCategory(next) {
+            $.ajax({
+                url: "/Admin/Category/GetInterviewJson",
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    category = response
+                    next();
+                }
+            })
+        }
+
+        function CreateTable() {
+            table = $('#dataTableData').DataTable({
+                bProcessing: true,
+                bLengthChange: true,
+                lengthMenu: [[10, 25, -1], [10, 25, 'All']],
+                bFilter: true,
+                bSort: true,
+                bPaginate: true,
+                data: category,
+                columns: [
+                    {
+                        data: "Serial Number",
+                        render: (data, type, row, meta) => {
+                            return row.sno
+                        }
+                    },
+                    {
+                        data: "Interview Category",
+                        render: (data, type, row, meta) => {
+                            return row.interviewCategory;
+                        }
+                    },
+                    {
+                        data: "Actions",
+                        render: (data, type, row, meta) => {
+                            return `<a id="${row.id}" role="button" style="background: #343A40;" class="btn" onclick="DeleteInterview(this)">
+                                                                                                        <i class="fa fa-trash text-white"></i>
+                                                                                                    </a>
+                                                                                                    <a id="${row.id}" role="button" class="btn bg-danger modelc-toggler" model-target="#myModal" onclick=(OpenModal(this))>
+                                                                                                        <i class="fa fa-edit text-white"></i>
+                                                                                                    </a>`
+                        }
+                    }
+                ]
+            })
+        }
+
+        function DeleteInterview(obj) {
+            var id = $(obj).attr('id');
+
+            $.ajax({
+                url: `/Admin/Category/DeleteInterview/${id}`,
+                type: "Delete",
+                dataType: "json",
+                success: (res) => {
+                    if (res) {
+                        dtRow = $(obj).closest('tr');  //assigning value on click delete
+                        var stockistTable = $('#dataTableData').DataTable();
+                        stockistTable.row(dtRow).remove().draw(false);
+                    }
+                }
+            })
+        }
+
+        function OpenModal(obj) {
+            var modal = $(obj).attr('model-target');
+
+            var id = $(obj).attr('id');
+
+            $.ajax({
+                url: `/Admin/Category/GetInterviewById/${id}`,
+                type: 'GET',
+                dataType: 'json',
+                success: (res) => {
+                    //debugger;
+                    $('#lblId').val(res.id);
+                    $('#txtSno').val(res.sno);
+                    $('#txtCategory').val(res.interviewCategory);
+
+                }
+            })
+
+            $(modal).css('display', 'block');
+        }
+
+        $('#editForm').on('submit', function (e) {
+            e.preventDefault();
+
+            var data = {
+                id: $('#lblId').val(),
+                sno: $('#txtSno').val(),
+                interviewCategory: $('#txtCategory').val(),
+            };
+
+            console.log(data);
+
+            $.ajax({
+                url: '/Admin/Category/UpdateInterview',
+                type: 'PUT',
+                data: data,
+                dataType: 'json',
+                success: (res) => {
+                    if (res) {
+                        GetCategory(() => {
+                            table.clear();
+                            table.rows.add(category).draw();
+                        })
+                    }
+                }
+            });
+
+            $('#myModal').css('display', 'none');
+
+        })
+    </script>
+}

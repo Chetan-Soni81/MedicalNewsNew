@@ -1,0 +1,120 @@
+notice-wrap {
+    display: block;
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 100%;
+	max-width: 380px;
+    font-family: 'Roboto', sans-serif;
+    padding: 15px 15px 0 15px;
+    box-sizing: border-box;
+    overflow: auto;
+}
+notice-wrap[position='top-left'] {
+    right: auto;
+    left: 0
+}
+notice-wrap[position='bottom-left'] {
+    right: auto;
+    left: 0;
+    top: auto;
+    bottom: 0;
+}
+notice-wrap[position='bottom-right'] {
+    right: 0;
+    left: auto;
+    top: auto;
+    bottom: 0;
+}
+notice {
+    display: block;
+    position: relative;
+    font-size: 14px;
+    font-weight: normal;
+    background-color: #FFF;
+	border: 1px solid #CCC;
+	border-radius: 5px;
+    box-sizing: border-box;
+    /*margin-bottom: 20px;*/
+    padding: 15px;
+    box-shadow: 0px 0px 5px 3px #fff;
+}
+notice > .material-icons{
+    font-size:20px;
+}
+notice > span{
+    margin-top:-5px;
+}
+notice:before,
+notice:after {
+    position: absolute;
+    content: "";
+    background-color: #BBB;
+    transform: rotate(45deg);
+}
+notice:before,
+notice:after {
+    box-sizing: border-box;
+}
+notice:before {
+    width: 16px;
+    height: 2px;
+    right: 14px;
+    top: calc(50% - 1px);
+}
+notice:after {
+    width: 2px;
+    height: 16px;
+    right: 20px;
+    top: calc(50% - 8px);
+}
+notice-close {
+    position: absolute;
+    display: block;
+    right: 12px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    top: calc(50% - 10px);
+    z-index: 1;
+}
+notice[close-on-click='true'] {
+    cursor: pointer;
+}
+notice[type='success'] {
+    color: #ffffff;
+    background-color: #3F51B5;
+    border-color: #04be5b;
+}
+notice[type='success']:before,
+notice[type='success']:after {
+    background-color: #e5e5e5;
+}
+notice[type='error'] {
+    color: #ffffff;
+    background-color: rgb(245, 20, 4);
+    border-color: #ffffff;
+}
+notice[type='error']:before,
+notice[type='error']:after {
+    background-color: #ffffff;
+    /* font-weight: bolder; */
+}
+notice[type='warning'] {
+    color: #ffffff;
+    background-color: #F44336;
+    border-color: #ff9948;
+}
+notice[type='warning']:before,
+notice[type='warning']:after {
+    background-color: #ffffff;
+}
+notice[type='info'] {
+    color: #ffffff;
+    background-color: rgba(166, 0, 255, 0.15);
+    border-color: #0082d5;
+}
+notice[type='info']:before,
+notice[type='info']:after {
+    background-color: #ffffff;
+}
